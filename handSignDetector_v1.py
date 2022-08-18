@@ -15,8 +15,8 @@ counter = 0
 
 while True:
     success, img = cap.read()
-    img = detector.findHands(img)
-    hands = detector.findPosition(img)
+    hands, img = detector.findHands(img)
+    #hands = detector.findPosition(img)
     if hands:
         hand = hands[0]
         print(hand)
@@ -52,5 +52,5 @@ while True:
     key = cv2.waitKey(1)
     if key == ord("s"):
         counter += 1
-        cv2.imwrite(f'{folder}/Image_{time.time()}.jpg', imgWhite)
+        #cv2.imwrite(f'{folder}/Image_{time.time()}.jpg', imgWhite)
         print(counter)
