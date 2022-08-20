@@ -1,6 +1,9 @@
 # ASL Recognition
 
-## Insert Gif here of it working
+## Demo
+
+<video src="asl_demo.mp4" controls="controls" style="max-width: 450px;">
+</video>
 
 ## Just run it
 

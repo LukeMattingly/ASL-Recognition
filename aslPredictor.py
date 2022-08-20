@@ -1,15 +1,14 @@
 import cv2
 import HandDetector as hd
-from keras.models import load_model
 import Classifier as cl
 import numpy as np
 import math
 
 cap = cv2.VideoCapture(0)
-detector = hd.handDetector(maxHands=1)
+detector = hd.HandDetector(maxHands=1)
 
 
-classifier = cl.Classifier("models\kaggle_cnn_1.h5")
+classifier = cl.Classifier("models\cnn_2.h5")
 
 
 labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
@@ -21,6 +20,8 @@ imgSize = 300
 
 while True:
     success, img = cap.read()
+    if type(img) == None:
+        print("Need camera plugged in")
     imgOutput = img.copy()
     hands, img = detector.findHands(img)
     if hands:
@@ -37,22 +38,30 @@ while True:
         if aspectRatio > 1:
             k = imgSize / h
             wCal = math.ceil(k * w)
-            imgResize = cv2.resize(imgCrop, (wCal, imgSize))
-            imgResizeShape = imgResize.shape
-            wGap = math.ceil((imgSize - wCal) / 2)
-            imgWhite[:, wGap:wCal + wGap] = imgResize
-            prediction, index = classifier.getPrediction(imgWhite, draw=False)
-            print(prediction, labels[index])
+            try:
+                imgResize = cv2.resize(imgCrop, (wCal, imgSize))
+                imgResizeShape = imgResize.shape
+                wGap = math.ceil((imgSize - wCal) / 2)
+                imgWhite[:, wGap:wCal + wGap] = imgResize
+                prediction, index = classifier.getPrediction(
+                    imgWhite, draw=False)
+                print(prediction, labels[index])
+            except:
+                print("move hand into frame")
 
         else:
             k = imgSize / w
             hCal = math.ceil(k * h)
-            imgResize = cv2.resize(imgCrop, (imgSize, hCal))
-            imgResizeShape = imgResize.shape
-            hGap = math.ceil((imgSize - hCal) / 2)
-            imgWhite[hGap:hCal + hGap, :] = imgResize
-            prediction, index = classifier.getPrediction(imgWhite, draw=False)
-            print(prediction, labels[index])
+            try:
+                imgResize = cv2.resize(imgCrop, (imgSize, hCal))
+                imgResizeShape = imgResize.shape
+                hGap = math.ceil((imgSize - hCal) / 2)
+                imgWhite[hGap:hCal + hGap, :] = imgResize
+                prediction, index = classifier.getPrediction(
+                    imgWhite, draw=False)
+                print(prediction, labels[index])
+            except:
+                print("move hand info frame")
 
         cv2.rectangle(imgOutput, (x - offset, y - offset-50),
                       (x - offset+90, y - offset-50+50), (255, 0, 255), cv2.FILLED)
@@ -61,8 +70,8 @@ while True:
         cv2.rectangle(imgOutput, (x-offset, y-offset),
                       (x + w+offset, y + h+offset), (255, 0, 255), 4)
 
-        cv2.imshow("ImageCrop", imgCrop)
-        cv2.imshow("ImageWhite", imgWhite)
+        #cv2.imshow("ImageCrop", imgCrop)
+        #cv2.imshow("ImageWhite", imgWhite)
 
     cv2.imshow("Image", imgOutput)
     cv2.waitKey(1)
