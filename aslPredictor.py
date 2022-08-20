@@ -1,5 +1,5 @@
 import cv2
-import handDetector as hd
+import HandDetector as hd
 from keras.models import load_model
 import Classifier as cl
 import numpy as np
@@ -9,7 +9,7 @@ cap = cv2.VideoCapture(0)
 detector = hd.handDetector(maxHands=1)
 
 
-classifier = cl.Classifier("kaggle_cnn_1.h5")
+classifier = cl.Classifier("models\kaggle_cnn_1.h5")
 
 
 labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
@@ -17,9 +17,6 @@ labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
 
 offset = 20
 imgSize = 300
-
-folder = "Data/C"
-counter = 0
 
 
 while True:
