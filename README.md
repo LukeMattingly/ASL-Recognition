@@ -1,9 +1,8 @@
 # ASL Recognition
 
-## Demo
+## Demo Preview
 
-<video src="asl_demo.mp4" controls="controls" style="max-width: 450px;">
-</video>
+<img src="demo\demo_preview.jpg" alt="alt text" width="350"/>
 
 ## Just run it
 
